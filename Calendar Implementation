@@ -1,0 +1,61 @@
+#include <stdio.h>
+// Function to check if a year is a leap year int
+isLeapYear(int year) {
+if ((year % 4 == 0 && year % 100 != 0) || (year % 400 == 0)) return 1; // Leap
+year
+else
+return 0; // Not a leap year
+}
+// Function to get the number of days in a month int
+getDaysInMonth(int month, int year) {
+int days[] = {31, 28 + isLeapYear(year), 31, 30, 31, 30, 31, 31, 30, 31, 30, 31};
+return days[month - 1];
+}
+// Function to calculate the first day of the month (Sunday = 0, Monday = 1, ..., Saturday =
+6)
+int calculateFirstDayOfMonth(int month, int year) {
+// Zeller's Congruence algorithm adjusted for Gregorian calendar if (month < 3)
+{
+month += 12;
+year--;
+}
+int k = year % 100; int j =
+year / 100;
+int firstDay = (1 + (13 * (month + 1)) / 5 + k + (k / 4) + (j / 4) + 5 * j) % 7;
+// Convert Zeller's result (0=Saturday, ..., 6=Friday) to (0=Sunday, ..., 6=Saturday)
+firstDay = (firstDay + 6) % 7; // Adjust to match the convention return
+firstDay;
+}
+// Function to print the calendar
+void printCalendar(int month, int year) {
+// Array to store names of months
+char *months[] = {"January", "February", "March", "April", "May", "June", "July", "August", "September",1 "October", "November", "December"}
+Header
+printf("\n %s %d\n", months[month - 1], year); printf(" Su Mo Tu
+We Th Fr Sa\n");
+// Get the first day ofthemonth
+intfirstDayOfWeek = calculateFirstDayOfMonth(month, year);
+// Print leading spacesforthe first week for(inti=0;i
+<firstDayOfWeek;i++)
+printf(" ");
+// Print the days
+int daysInMonth = getDaysInMonth(month, year); for (int day = 1;
+day <= daysInMonth; day++) {
+printf("%3d", day);
+if ((firstDayOfWeek + day) % 7 == 0) printf("\n");
+else
+printf(" ");
+}
+printf("\n");
+}
+int main() {
+intmonth, year;
+printf("Entermonthand year(MMYYYY): ");
+scanf("%d%d",&month,&year);
+//Check ifthe yearis a leap year if
+(isLeapYear(year))
+printf("%disa leapyear.\n",year); else
+printf("%dis not a leapyear.\n",year);
+// Print the calendar printCalendar(month, year);
+return 0;
+}
